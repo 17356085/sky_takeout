@@ -10,18 +10,19 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sky-pojo</artifactId>
     <dependencies>
-        <!-- Lombok：简化实体类getter/setter等代码 -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!-- Jackson：JSON处理工具，实体类序列化/反序列化 -->
+
+        <!-- JSON处理 (Spring Boot 3 已内置Jackson，无需单独指定版本) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.2</version>
         </dependency>
-        <!-- Knife4j：API文档注解支持（实体类注释生成文档） -->
+
+        <!-- API文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
