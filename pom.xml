@@ -17,6 +17,29 @@
         <module>sky-pojo</module>
         <module>sky-server</module>
     </modules>
+    <!-- 添加仓库配置 -->
+    <repositories>
+        <!-- 中央仓库 -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <!-- 阿里云仓库 -->
+        <repository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+        <!-- Knife4j官方仓库 -->
+        <repository>
+            <id>sonatype-nexus-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <!-- Spring仓库 -->
+        <repository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
     <properties>
         <java.version>21</java.version> <!-- 升级至 Java 21 -->
         <mybatis.spring>3.0.3</mybatis.spring> <!-- MyBatis 适配 Spring Boot 3 -->
@@ -26,7 +49,8 @@
         <druid>1.2.20</druid> <!-- Druid 适配 Spring Boot 3 -->
         <pagehelper>1.4.7</pagehelper> <!-- PageHelper 适配 Spring Boot 3 -->
         <aliyun.sdk.oss>3.10.2</aliyun.sdk.oss>
-        <knife4j>3.0.2</knife4j>
+        <knife4j-openapi3-jakarta-spring-boot-starter.version>4.5.0</knife4j-openapi3-jakarta-spring-boot-starter.version>
+        <aspectj>1.9.20</aspectj>
         <aspectj>1.9.20</aspectj>
         <jjwt>0.11.5</jjwt>
         <poi>5.2.5</poi> <!-- POI 升级至 5.x 支持 Java 11+ -->
@@ -44,11 +68,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Spring Boot Starter Web（含内嵌 Tomcat） -->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-web</artifactId>-->
-<!--            </dependency>-->
             <!-- MyBatis -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -94,8 +113,8 @@
             <!-- Knife4j (API文档) -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j}</version>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
             </dependency>
 
             <!-- AspectJ -->
