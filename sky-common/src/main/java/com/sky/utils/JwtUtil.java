@@ -4,6 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -26,12 +29,15 @@ public class JwtUtil {
         long expMillis = System.currentTimeMillis() + ttlMillis;
         Date exp = new Date(expMillis);
 
+        // 创建安全的密钥
+        SecretKey key = createSecretKey(secretKey);
+
         // 设置jwt的body
         JwtBuilder builder = Jwts.builder()
                 // 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的
                 .setClaims(claims)
                 // 设置签名使用的签名算法和签名使用的秘钥
-                .signWith(signatureAlgorithm, secretKey.getBytes(StandardCharsets.UTF_8))
+                .signWith(key, signatureAlgorithm)
                 // 设置过期时间
                 .setExpiration(exp);
 
@@ -46,13 +52,33 @@ public class JwtUtil {
      * @return
      */
     public static Claims parseJWT(String secretKey, String token) {
+        // 创建安全的密钥
+        SecretKey key = createSecretKey(secretKey);
+
         // 得到DefaultJwtParser
         Claims claims = Jwts.parser()
                 // 设置签名的秘钥
-                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                .setSigningKey(key)
                 // 设置需要解析的jwt
                 .parseClaimsJws(token).getBody();
         return claims;
     }
 
+    /**
+     * 创建安全的密钥
+     * 确保密钥的密钥长度满足HS256算法的要求（至少256位）
+     *
+     * @param secretKey 原始密钥字符串
+     * @return SecretKey
+     */
+    private static SecretKey createSecretKey(String secretKey) {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        // 如果密钥长度不足32字节，则进行扩展
+        if (keyBytes.length < 32) {
+            byte[] extendedKey = new byte[32];
+            System.arraycopy(keyBytes, 0, extendedKey, 0, keyBytes.length);
+            keyBytes = extendedKey;
+        }
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 }
